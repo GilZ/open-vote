@@ -6,6 +6,8 @@ app.use(express.compress());
 var rootFolder =__dirname + '/../client/app';
 app.use(express.static(rootFolder));
 
+var serverRoutes = require('./lib/routes.js')(app);
+
 app.all('/*', function(req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
     res.sendfile('index.html', { root: rootFolder});
@@ -13,8 +15,6 @@ app.all('/*', function(req, res, next) {
 
 app.addListener('request', app);
 
-var env = {'pg': ''},
-    serverRoutes = require('./lib/routes.js')(app, env);
 
 // configure express app using the config script
 //   config.express(app, express);

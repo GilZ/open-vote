@@ -1,8 +1,9 @@
 {
-   "name": "open-vote",
-   "version": "0.0.1",
-   "dependencies": {
-      "express": "3.3.4",
-      "underscore": "1.4.3"
-   }
+  "name": "open-vote",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.3.4",
+    "underscore": "1.7.0",
+    "csv-parse": "0.0.6"
+  }
 }
