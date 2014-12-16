@@ -12,11 +12,10 @@ angular.module('openVote.mainView', [])
         });
     }])
     .controller('mainController', [ '$scope', '$http', function ($scope, $http) {
-        $scope.invoke = function(){
-            $http.get('/api')
-                .success(function(res){
-                    console.log(res)
-                });
-        }
+
+        $http.get('/api/bills')
+            .success(function(res){
+                $scope.bills = res;
+            });
     }])
 ;
