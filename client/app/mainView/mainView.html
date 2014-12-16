@@ -1,1 +1,15 @@
-<p ng-repeat="bill in bills">{{$index + 1}}. {{bill['popular name']}}</p>
+<div class="main-view">
+    <span class="results-panel">
+        <div ng-repeat="bill in bills">
+            <p>{{$index + 1}}. {{bill['popular name']}}   :   {{!bill.userVoted ? '?' : bill.userVoted}}</p>
+        </div>
+    </span>
+    <span class="voting-panel" ng-show="!votingEnded">
+        <h3 class="vote-headline">{{bills[currentVoteIndex].name}}</h3>
+        <div class="button-set">
+            <span class="vote-button" ng-click="vote('1')"> בעד</span>
+            <span class="vote-button" ng-click="vote('0')"> נגד</span>
+        </div>
+
+    </span>
+</div>
