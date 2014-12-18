@@ -18,31 +18,36 @@
 
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    min-height:100%;
+}
+
 body {
     font-family: 'Alef';
+    text-align: center;
+    background-image: -webkit-linear-gradient(top, #edecec, #cecbc9);
+    background-image: linear-gradient(top, #edecec, #cecbc9);
 }
 
 .main-view {
-    display: flex;
-    border: 1px solid darkred;
+    text-align: center;
+    width: 60%;
+    margin: 10px auto;
 }
 
 .voting-panel {
-    align-self: flex-start;
-    width: 70%;
-    display: inline-block;
-    border: 1px solid red;
 }
 
 .results-panel {
-    width: 20%;
-    display: inline-block;
-    border: 1px solid pink;
+    width: 100%;
 }
 
-.voting-panel {
-    width: 50%;
-}
 .voting-panel > .vote-headline {
     text-align: center;
 }
@@ -54,16 +59,117 @@ body {
 }
 
 .vote-button {
-    text-align: center;
-    border: 2px solid #000000;
-    background-color: lightgray;
-    width: 100px;
+    background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+    background-image: linear-gradient(top, #f4f1ee, #fff);
+    border-radius: 50%;
+    box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, .3), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204,198,197,.5);
+    float:left;
     height: 70px;
-    margin: auto;
-    font-size: x-large;
+    margin: 0 30px 30px 0;
+    position: relative;
+    width: 70px;
+    -webkit-transition: all .1s linear;
+    transition: all .1s linear;
 }
 
-.vote-button:hover{
-    background-color: darkgray;
+.vote-button:after{
+    color:#e9e6e4;
+    content: "";
+    display: block;
+    font-size: 30px;
+    height: 30px;
+    text-decoration: none;
+    text-shadow: 0px -1px 1px #bdb5b4, 1px 1px 1px white;
+    position: absolute;
+    width: 30px;
+}
+.vote-button.for:after {
+    content: "בעד";
+    left: 30px;
+    top: 14px;
+}
+
+.vote-button.against:after {
+    content: "נגד";
+    left: 24px;
+    top: 13px;
+}
+
+
+.vote-button:hover {
+    background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
+    background-image: linear-gradient(top, #fff, #f4f1ee);
+    color:#0088cc;
+}
+
+
+.vote-button.for:hover:after{
+    color:#83d244;
+    text-shadow:0px 0px 6px #83d244;
+}
+
+.vote-button.against:hover:after{
+    color:#eb2f2f;
+    text-shadow:0px 0px 6px #eb2f2f;
+}
+
+
+
+.vote-button:active{
+    background-image: -webkit-linear-gradient(top, #efedec, #f7f4f4);
+    background-image: linear-gradient(top, #efedec, #f7f4f4);
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,.4), inset 0px -3px 1px 1px rgba(204,198,197,.5);
+}
+
+.vote-button:active:after{
+    color:#dbd2d2;
+    text-shadow: 0px -1px 1px #bdb5b4, 0px 1px 1px white;
+}
+
+
+.results-item {
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    text-decoration: none;
+    text-shadow: 0px -1px 1px #bdb5b4, 1px 1px 1px white;
+    color: #ffffff;
+    display: inline-block;
     font-weight: bold;
+    line-height: 1.6em;
+    text-align: center;
+    width: 1.6em;
+    cursor: default;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    margin: 4px 4px;
+}
+
+.results-item.unknown {
+    background-color: gray;
+    opacity: 0.3;
+    cursor: default;
+}
+
+.results-item.known {
+     cursor: pointer;
+
+ }
+
+
+.results-item.known.for {
+    background-color: #83d244;
+
+}
+
+.results-item.known.against {
+    background-color: #eb2f2f;
+}
+
+.results-item.active {
+    border-left: none;
+    color: #000000;
 }

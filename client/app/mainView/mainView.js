@@ -27,6 +27,14 @@ angular.module('openVote.mainView', [])
             }
         };
 
+        $scope.changeVote = function(index) {
+            if ($scope.votingEnded || !$scope.bills[index].userVoted) {
+                return;
+            }
+            delete $scope.bills[index].userVoted;
+            $scope.currentVoteIndex = index;
+        };
+
         $http.get('/api/bills')
             .success(function(res){
                 $scope.bills = res;

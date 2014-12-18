@@ -1,15 +1,25 @@
 <div class="main-view">
-    <span class="results-panel">
-        <div ng-repeat="bill in bills">
-            <p>{{$index + 1}}. {{bill['popular name']}}   :   {{!bill.userVoted ? '?' : bill.userVoted}}</p>
-        </div>
-    </span>
-    <span class="voting-panel" ng-show="!votingEnded">
-        <h3 class="vote-headline">{{bills[currentVoteIndex].name}}</h3>
+    <div class="results-panel">
+        <span class="results-item"
+              ng-click="changeVote($index)"
+             ng-class="{
+                'active' : $index === currentVoteIndex,
+                'known' : bill.userVoted,
+                'unknown' : (!bill.userVoted && $index !== currentVoteIndex),
+                'for' : bill.userVoted === 'for',
+                'against' : bill.userVoted === 'against'
+             }"
+             ng-repeat="bill in bills">
+            <span>{{$index + 1}}</span>
+        </span>
+    </div>
+    <div class="voting-panel" ng-show="!votingEnded">
+        <h2 class="vote-headline">{{bills[currentVoteIndex].name}} ({{bills[currentVoteIndex]['popular name']}})</h2>
+        <h3 class="vote">{{bills[currentVoteIndex].description}}</h3>
         <div class="button-set">
-            <span class="vote-button" ng-click="vote('1')"> בעד</span>
-            <span class="vote-button" ng-click="vote('0')"> נגד</span>
+            <a class="vote-button for" ng-click="vote('for')"></a>
+            <a class="vote-button against" ng-click="vote('against')"></a>
         </div>
 
-    </span>
+    </div>
 </div>
