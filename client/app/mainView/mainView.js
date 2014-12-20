@@ -13,6 +13,8 @@ angular.module('openVote.mainView', [])
     }])
     .controller('mainController', [ '$scope', '$http', function ($scope, $http) {
 
+        var userVotes = {};
+
         $scope.currentVoteIndex = 0;
 
         $scope.vote = function(vote){
@@ -24,6 +26,15 @@ angular.module('openVote.mainView', [])
             $scope.currentVoteIndex++;
             if ($scope.currentVoteIndex >= $scope.bills.length) {
                 $scope.votingEnded = true;
+
+                _.each($scope.bills, function(bill) {
+                   userVotes[bill.id] = bill.userVoted;
+                });
+
+                $http.post('/api/bills', userVotes)
+                   .success(function(res) {
+                      console.log(res);
+                   });
             }
         };
 
