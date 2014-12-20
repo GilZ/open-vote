@@ -24,13 +24,22 @@ module.exports = function() {
 
       getParty: function(votes, done) {
          var agreedWith = [],
-             result;
+             result,
+             billsCount = underscore.size(votes);
 
          underscore.each(votes, function(vote, billId) {
-            agreedWith.concat(bills[billId-1][vote]);
+             agreedWith = agreedWith.concat(bills[billId-1][vote]);
          });
 
-         result = underscore.countBy(agreedWith, underscore.identity);
+         result = underscore.sortBy(underscore.map(underscore.countBy(agreedWith, underscore.identity), function(count, party) {
+             console.log(count / billsCount);
+             return {
+                 party: party,
+                 agreed: count / billsCount
+             };
+         }), 'agreed').reverse();
+
+         done(null, result);
 
       }
    }

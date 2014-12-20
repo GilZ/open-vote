@@ -3,6 +3,7 @@ var express = require('express'),
     config = require('./config/config.json');
 
 app.use(express.compress());
+app.use(express.bodyParser());
 var rootFolder =__dirname + '/../client/app';
 app.use(express.static(rootFolder));
 
