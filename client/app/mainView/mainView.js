@@ -11,44 +11,85 @@ angular.module('openVote.mainView', [])
             controller: 'mainController'
         });
     }])
-    .controller('mainController', [ '$scope', '$http', function ($scope, $http) {
+    .filter('percentage', ['$filter', function ($filter) {
+        return function (input, decimals) {
+            return $filter('number')(input * 100, decimals) + '%';
+        };
+    }])
+    .constant('VOTING_URL', '/api/bills')
+    .controller('mainController', [ '$scope', '$http', '$timeout', 'VOTING_URL', function ($scope, $http, $timeout, VOTING_URL) {
 
-        var userVotes = {};
 
-        $scope.currentVoteIndex = 0;
+        function startVoting() {
+            // Init variables
+            $scope.currentVoteIndex = 0;
+            $scope.votingStatus = 'VOTING';
 
-        $scope.vote = function(vote){
-            if ($scope.votingEnded) {
+            // Get votes from server
+            $http.get(VOTING_URL)
+                .success(function (res) {
+                    $scope.bills = res;
+                })
+                .error(function (err) {
+                    console.log('Unable to obtain votes, received: ' + err);
+                })
+            ;
+        }
+
+
+        $scope.vote = function (vote) {
+            if ($scope.votingStatus !== 'VOTING') {
                 return;
             }
-            
+
             $scope.bills[$scope.currentVoteIndex].userVoted = vote;
             $scope.currentVoteIndex++;
             if ($scope.currentVoteIndex >= $scope.bills.length) {
-                $scope.votingEnded = true;
-
-                _.each($scope.bills, function(bill) {
-                   userVotes[bill.id] = bill.userVoted;
-                });
-
-                $http.post('/api/bills', userVotes)
-                   .success(function(res) {
-                      console.log(res);
-                   });
+                $scope.votingStatus = 'PENDING_RESULTS';
             }
         };
 
-        $scope.changeVote = function(index) {
-            if ($scope.votingEnded || !$scope.bills[index].userVoted) {
+        $scope.changeVote = function (index) {
+            if ($scope.votingStatus === 'ENDED' || !$scope.bills[index].userVoted) {
                 return;
             }
+            $scope.votingStatus = 'VOTING';
             delete $scope.bills[index].userVoted;
             $scope.currentVoteIndex = index;
         };
 
-        $http.get('/api/bills')
-            .success(function(res){
-                $scope.bills = res;
+        $scope.endVoting = function () {
+
+            var userVotes = {},
+                matches = {},
+                AGREED_FACTOR = 1 / $scope.bills.length;
+
+            $scope.votingStatus = 'CALCULATING_RESULTS';
+
+            $timeout(function () {
+                $scope.votingStatus = 'ENDED';
+            }, Math.random() * 3000);
+
+            _.each($scope.bills, function (bill) {
+                userVotes[bill.id] = bill.userVoted;
+                if (bill.userVoted === 'for') {
+                    _.each(bill.for, function (party) {
+                        matches[party] = (matches[party] || 0) + AGREED_FACTOR;
+                    });
+                } else {
+                    _.each(bill.against, function (party) {
+                        matches[party] = (matches[party] || 0) + AGREED_FACTOR;
+                    });
+                }
             });
+
+            $scope.matches = _.toArray(matches);
+
+            $http.post(VOTING_URL, userVotes);
+        };
+
+        $scope.restart = startVoting;
+
+        startVoting();
     }])
 ;
