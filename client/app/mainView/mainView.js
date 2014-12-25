@@ -72,15 +72,9 @@ angular.module('openVote.mainView', [])
 
             _.each($scope.bills, function (bill) {
                 userVotes[bill.id] = bill.userVoted;
-                if (bill.userVoted === 'for') {
-                    _.each(bill.for, function (party) {
-                        matches[party] = (matches[party] || 0) + AGREED_FACTOR;
-                    });
-                } else {
-                    _.each(bill.against, function (party) {
-                        matches[party] = (matches[party] || 0) + AGREED_FACTOR;
-                    });
-                }
+                _.each(bill[bill.userVoted], function (party) {
+                    matches[party] = (matches[party] || 0) + AGREED_FACTOR;
+                });
             });
 
             $scope.matches = _.toArray(matches);
