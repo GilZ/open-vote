@@ -1,52 +1,45 @@
 <div class="main-view">
     <div class="results-panel">
         <span class="results-item"
-              ng-click="changeVote($index)"
               ng-class="{
-                'active' : $index === currentVoteIndex,
+                'active' : $index === ballot.currentVoteIndex,
                 'known' : bill.userVoted,
-                'unknown' : (!bill.userVoted && $index !== currentVoteIndex),
+                'unknown' : (!bill.userVoted && $index !== ballot.currentVoteIndex),
                 'for' : bill.userVoted === 'for',
                 'against' : bill.userVoted === 'against'
              }"
-              ng-repeat="bill in bills">
+              ng-repeat="bill in ballot.bills">
             <span>{{$index + 1}}</span>
             <i ng-class="{'fa fa-question-circle' : !bill.userVoted, 'fa fa-thumbs-up' :  bill.userVoted === 'for', 'fa fa-thumbs-down' :  bill.userVoted === 'against'}"></i>
         </span>
     </div>
-    <div class="voting-panel" ng-if="votingStatus === 'VOTING'">
-        <h2 class="vote-headline">{{bills[currentVoteIndex].name}} ({{bills[currentVoteIndex]['popular name']}})</h2>
+    <div class="voting-panel" ng-if="ballot.votingStatus === 'VOTING'">
+        <h2 class="vote-headline">{{ballot.bills[ballot.currentVoteIndex].name}} ({{ballot.bills[ballot.currentVoteIndex]['popular name']}})</h2>
 
-        <h3 class="vote">{{bills[currentVoteIndex].description}}</h3>
+        <h3 class="vote">{{ballot.bills[ballot.currentVoteIndex].description}}</h3>
 
         <div class="button-set">
-            <div class="vote-button" ng-click="vote('for')">
+            <div class="vote-button" ng-click="ballot.vote('for')">
                 <i class="fa fa-thumbs-up fa-5x"></i>
-
                 <h3>בעד</h3>
             </div>
-            <div class="vote-button" ng-click="vote('against')">
+            <div class="vote-button" ng-click="ballot.vote('against')">
                 <i class="fa fa-thumbs-down fa-5x"></i>
-
                 <h3>נגד</h3>
             </div>
         </div>
 
     </div>
-    <div class="pre-match-panel" ng-if="votingStatus === 'PENDING_RESULTS' || votingStatus === 'CALCULATING_RESULTS'">
+    <div class="pre-match-panel" ng-if="ballot.votingStatus === 'PENDING_RESULTS' || ballot.votingStatus === 'CALCULATING_RESULTS'">
         <div class="button-set ">
-            <div ng-show="votingStatus === 'PENDING_RESULTS'" class="end-voting-button" ng-click="endVoting()">
-                <h1>חשב תוצאות</h1>
-                <i class="fa fa-question-circle fa-3x"></i>
-            </div>
-            <div ng-show="votingStatus === 'CALCULATING_RESULTS'" class="end-voting-button">
-                <h1>מחשב...</h1>
+            <div ng-show="ballot.votingStatus === 'CALCULATING_RESULTS'" class="end-voting-pane">
+                <h1>מחשב תוצאות</h1>
                 <i class="fa fa-spinner fa-spin fa-3x"></i>
             </div>
         </div>
     </div>
-    <div class="match-panel" ng-if="votingStatus === 'ENDED'">
-        <div ng-repeat="match in matches track by $index">{{$index + 1}} : {{match | percentage:2}}</div>
-        <i class="fa fa-refresh fa-4x" ng-click="restart()"></i>
+    <div class="match-panel" ng-if="ballot.votingStatus === 'ENDED'">
+        <div ng-repeat="match in ballot.matches track by $index">{{$index + 1}} : {{match | percentage:2}}</div>
+        <i class="restart-vote-button fa fa-refresh fa-4x" ng-click="ballot.restart()"></i>
     </div>
 </div>

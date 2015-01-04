@@ -106,10 +106,6 @@ body {
     cursor: default;
 }
 
-.results-item.known {
-    cursor: pointer;
-}
-
 .results-item.known.for {
     background-color: #83d244;
 
@@ -125,32 +121,12 @@ body {
 
 }
 
-.end-voting-button {
+.end-voting-pane {
     margin-top: 6%;
-    border: 2px solid gray;
-    border-radius: 4px;
     display: inline-block;
 
 }
 
-.end-voting-button:hover {
-    background-color: #bdb5b4;
+.restart-vote-button{
     cursor: pointer;
-}
-
-.end-voting-button > *{
-    padding-left: 18px;
-    padding-right: 18px;
-    margin: 0;
-}
-.end-voting-button:hover > i{
-    color: navy;
-}
-
-.end-voting-button:active {
-    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, .4), inset 0px -3px 1px 1px rgba(204, 198, 197, .5);
-}
-
-.end-voting-button:active:after {
-    text-shadow: 0px -1px 1px #bdb5b4, 0px 1px 1px white;
 }
