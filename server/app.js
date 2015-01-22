@@ -20,4 +20,4 @@ app.addListener('request', app);
 // configure express app using the config script
 //   config.express(app, express);
 app.listen(config.port || 3030);
-console.log('listening on http(s)://localhost:3030');
+console.log('listening on http(s)://localhost:' + (config.port || 3030));
